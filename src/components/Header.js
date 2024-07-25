@@ -22,7 +22,7 @@ function Header() {
 
     const handleLogin = () => {
         // Navigate to login page
-        navigate('/login');
+        navigate('/Login');
     };
 
     const handleLogout = () => {
@@ -45,7 +45,7 @@ function Header() {
                     <li><Link to="/test">Typing Test</Link></li>
                     <li><Link to="/progress">Progress</Link></li>
                     <li><Link to="/settings">Settings</Link></li>
-                    {isLoggedIn && isAdmin && <li><Link to="/adminpanel">Admin Panel</Link></li>}
+                    {isLoggedIn && isAdmin && <li><Link to="/admin-panel">Admin Panel</Link></li>}
                 </ul>
             </nav>
             <div className="theme-toggle" onClick={toggleTheme}>

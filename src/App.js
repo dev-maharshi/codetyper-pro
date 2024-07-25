@@ -7,6 +7,7 @@ import Progress from './components/Progress';
 import Settings from './components/Settings';
 import AdminPanel from './components/AdminPanel';
 import Login from './components/Login';
+import Register from './components/Register';
 import './styles.css';
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
         <Route path="/progress" element={<Progress />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="/Login" element={<Login />} />
+        <Route path="/Register" element={<Register />} />
         <Route path="/admin-panel" element={<AdminPanel />} />
       </Routes>
     </Router>

@@ -1,0 +1,125 @@
+.register_container .background {
+    width: 1280px;
+    height: 720px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #EBEFFF;
+    color: #1A1A1A;
+    border-radius: 30px;
+    position: absolute;
+    overflow: hidden;
+
+}
+
+
+.register_container #laptopImg {
+    width: 536px;
+    height: 492px;
+    position: absolute;
+    top: 177px;
+    left: 163px;
+    background-image: url('E:/coding/CodeTyper Pro/codetyper-pro/public/Other 07.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.register_container #rectangle1 {
+    width: 635px;
+    height: 377px;
+    transform: rotate(-97deg);
+    background: #656ED3;
+    position: absolute;
+    border-radius: 106px;
+    left: 10px;
+}
+
+.register_container #rectangle2 {
+
+    width: 635px;
+    height: 377px;
+    background: #AFB3FF;
+    position: absolute;
+    border-radius: 106px;
+    transform: rotate(90deg);
+    top: 10px;
+    left: 40px;
+}
+
+.register_container .Register {
+    width: 345px;
+    height: 331px;
+    position: absolute;
+    top: 191px;
+    left: 794px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.register_container h2 {
+    font-size: 16px;
+    font-style: bold;
+    margin-bottom: 30px;
+}
+
+.register_container .Register button {
+    display: flex;
+    width: 345px;
+    height: 54px;
+    padding: 15px;
+    margin: 11px;
+    align-items: center;
+    gap: 15px;
+    border: none;
+    border-radius: 10px;
+    font-size: 20px;
+    font-style: normal;
+    font-weight: 400;
+    line-height: normal;
+    cursor: pointer;
+}
+
+.register_container #FBButton {
+    background: #1877F2;
+    color: #FFF;
+}
+
+.register_container #FBButton:before {
+    content: url('E:/coding/CodeTyper Pro/codetyper-pro/public/FBLogo.svg');
+    width: 24px;
+    height: 24px;
+}
+
+.register_container #GButton {
+    background: #FFF;
+    color: #1A1A1A;
+}
+
+.register_container #GButton:before {
+    content: url('E:/coding/CodeTyper Pro/codetyper-pro/public/GLogo.svg');
+    width: 24px;
+    height: 24px;
+}
+
+.register_container #GHButton {
+    background: #000;
+    color: #FFF;
+}
+
+.register_container #GHButton:before {
+    content: url('E:/coding/CodeTyper Pro/codetyper-pro/public/GHLogo.svg');
+    width: 24px;
+    height: 24px;
+}
+
+.register_container p {
+    font-size: 16px;
+    margin-top: 30px;
+}
+
+.register_container strong a {
+    color: #000;
+    text-decoration: none;
+}

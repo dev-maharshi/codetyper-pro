@@ -18,7 +18,12 @@
   --button-text-color: #282c34;
 }
 
+[data-button='btnhover']{
+  --GHbutton-bg: #3d21f1;
+}
+
 body {
+  width: 100%;
   background-color: var(--background-color);
   color: var(--text-color);
   margin: 0;

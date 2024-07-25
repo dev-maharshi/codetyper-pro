@@ -73,8 +73,8 @@ function Settings() {
   };
 
   const opts = {
-    height: '390',
-    width: '640',
+    height: '0',
+    width: '0',
     playerVars: {
       autoplay: 0,
     },

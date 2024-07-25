@@ -8,12 +8,30 @@ function TypingTest() {
 
   useEffect(() => {
     fetchRandomText();
-  }, []);
-
+  });
+  const url = 'https://random-text-generator.p.rapidapi.com/api/v1/paragraph?maxSentences=15&realWord=false&minSentences=2';
+  const options = {
+    method: 'GET',
+    headers: {
+      'x-rapidapi-key': '4dfa86dd9bmsh76324d7992d4a44p18227ejsn783008c6df75',
+      'x-rapidapi-host': 'random-text-generator.p.rapidapi.com'
+    }
+  };
   const fetchRandomText = async () => {
-    const response = await fetch('https://api.example.com/random-text'); // Replace with actual API
-    const data = await response.json();
-    setText(data.text);
+    try {
+      const response = await fetch(url,options);
+      const data = await response.json();
+      if (data.documents && data.documents.length > 0) {
+        const randomDoc = data.documents[Math.floor(Math.random() * data.documents.length)];
+        setText(randomDoc.text);
+        console.log(setText(randomDoc.text));
+      } else {
+        setText('No documentation found.');
+      }
+    } catch (error) {
+      console.error('Error fetching the data:', error);
+      setText('Error fetching the documentation.');
+    }
   };
 
   const handleChange = (e) => {
