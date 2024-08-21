@@ -26,7 +26,7 @@ function Settings() {
         part: 'snippet',
         playlistId: playlistId,
         maxResults: 10,
-        key: 'AIzaSyC6Cw5y7JNMzK_ugVa6GoFuREum3NC_a_k',
+        key: '',
       },
     })
     .then(response => setPlaylistVideos(response.data.items))
