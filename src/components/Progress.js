@@ -15,6 +15,7 @@ function Progress() {
     { date: '2024-07-20', speed: 45, accuracy: 75 },
     { date: '2024-07-19', speed: 50, accuracy: 85 },
     { date: '2024-07-18', speed: 55, accuracy: 96 },
+    
     // Add more data
   ];
 

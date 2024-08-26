@@ -1,61 +1,91 @@
 import React, { useState, useEffect } from 'react';
 
 function TypingTest() {
-  const [text, setText] = useState('');
+  const [text, setText] = useState('The quick brown fox jumps over the lazy dog.');
   const [inputValue, setInputValue] = useState('');
   const [startTime, setStartTime] = useState(null);
   const [duration, setDuration] = useState(0);
+  const [timer, setTimer] = useState(null);
+  const [correctCount, setCorrectCount] = useState(0);
+  const [highlightedText, setHighlightedText] = useState([]);
 
   useEffect(() => {
-    fetchRandomText();
-  });
-  const url = 'https://random-text-generator.p.rapidapi.com/api/v1/paragraph?maxSentences=15&realWord=false&minSentences=2';
-  const options = {
-    method: 'GET',
-    headers: {
-      'x-rapidapi-key': '4dfa86dd9bmsh76324d7992d4a44p18227ejsn783008c6df75',
-      'x-rapidapi-host': 'random-text-generator.p.rapidapi.com'
+    if (inputValue.length === 0) {
+      resetTest();
     }
-  };
-  const fetchRandomText = async () => {
-    try {
-      const response = await fetch(url,options);
-      const data = await response.json();
-      if (data.documents && data.documents.length > 0) {
-        const randomDoc = data.documents[Math.floor(Math.random() * data.documents.length)];
-        setText(randomDoc.text);
-        console.log(setText(randomDoc.text));
-      } else {
-        setText('No documentation found.');
-      }
-    } catch (error) {
-      console.error('Error fetching the data:', error);
-      setText('Error fetching the documentation.');
-    }
-  };
+  }, [inputValue]);
 
   const handleChange = (e) => {
     const value = e.target.value;
+    setInputValue(value);
+
+    // Start timer on first input
     if (!startTime) {
       setStartTime(Date.now());
+      startTimer();
     }
-    setInputValue(value);
+
+    // Check input character by character
+    checkInput(value);
+  };
+
+  const startTimer = () => {
+    const interval = setInterval(() => {
+      setDuration((prevDuration) => prevDuration + 1);
+    }, 1000);
+    setTimer(interval);
+  };
+
+  const checkInput = (value) => {
+    let newCorrectCount = 0;
+
+    const newHighlightedText = text.split('').map((char, index) => {
+      if (index < value.length) {
+        const correct = value[index] === char;
+        if (correct) {
+          newCorrectCount++;
+          return <span style={{ color: 'green' }} key={index}>{char}</span>;
+        } else {
+          return <span style={{ color: 'red' }} key={index}>{char}</span>;
+        }
+      } else {
+        return <span key={index}>{char}</span>; // Return the character as is if not typed yet
+      }
+    });
+
+    setHighlightedText(newHighlightedText);
+    setCorrectCount(newCorrectCount);
+
+    // Check if the input matches the text
     if (value === text) {
-      setDuration((Date.now() - startTime) / 1000);
-      // Logic to handle completion of the test
+      clearInterval(timer);
+      alert(`Typing test completed in ${duration} seconds! You typed ${newCorrectCount} characters correctly.`);
+      resetTest();
+    }
+  };
+
+  const resetTest = () => {
+    setInputValue('');
+    setStartTime(null);
+    setDuration(0);
+    setCorrectCount(0);
+    setHighlightedText([]);
+    if (timer) {
+      clearInterval(timer);
     }
   };
 
   return (
     <div>
       <h2>Typing Test</h2>
-      <p>{text}</p>
+      <p>{inputValue ? highlightedText : text}</p> {/* Render the highlighted text */}
       <textarea
         value={inputValue}
         onChange={handleChange}
         placeholder="Start typing..."
       />
-      <p>Duration: {duration ? `${duration} seconds` : 'Not completed'}</p>
+      <p>Duration: {duration} seconds</p>
+      <p>Correct Characters: {correctCount}</p>
     </div>
   );
 }
