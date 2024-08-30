@@ -1,3 +1,4 @@
+/* 
 .register_container .background {
     width: 1280px;
     height: 720px;
@@ -11,8 +12,6 @@
     overflow: hidden;
 
 }
-
-
 .register_container #laptopImg {
     width: 536px;
     height: 492px;
@@ -122,4 +121,18 @@
 .register_container strong a {
     color: #000;
     text-decoration: none;
+} */
+
+.container .login-option {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.container .login-option a {
+    color: #21a1f1;
+    text-decoration: none;
+}
+
+.container .login-option a:hover {
+    text-decoration: underline;
 }

@@ -21,7 +21,6 @@ function Header() {
     };
 
     const handleLogin = () => {
-        // Navigate to login page
         navigate('/Login');
     };
 
@@ -30,8 +29,7 @@ function Header() {
         setIsAdmin(false);
         localStorage.removeItem('isLoggedIn');
         localStorage.removeItem('isAdmin');
-        // Redirect to home or login page
-        navigate('/');;
+        navigate('/');
     };
 
     return (

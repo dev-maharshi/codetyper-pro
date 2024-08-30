@@ -1,13 +1,73 @@
+// import React from 'react';
+// import { Line } from 'react-chartjs-2';
+// import { Chart, registerables } from 'chart.js';
+// import 'chartjs-adapter-date-fns';
+
+// // Register the necessary components for Chart.js
+// Chart.register(...registerables);
+
+// function Progress() {
+//   // Placeholder data for now
+//   const progressData = [
+//     { date: '2024-07-23', speed: 60, accuracy: 95 },
+//     { date: '2024-07-22', speed: 35, accuracy: 45 },
+//     { date: '2024-07-21', speed: 40, accuracy: 65 },
+//     { date: '2024-07-20', speed: 45, accuracy: 75 },
+//     { date: '2024-07-19', speed: 50, accuracy: 85 },
+//     { date: '2024-07-18', speed: 55, accuracy: 96 },
+    
+//     // Add more data
+//   ];
+
+//   const data = {
+//     labels: progressData.map(entry => entry.date),
+//     datasets: [
+//       {
+//         label: 'Typing Speed (WPM)',
+//         data: progressData.map(entry => entry.speed),
+//         borderColor: 'blue',
+//         fill: false,
+//       },
+//       {
+//         label: 'Accuracy (%)',
+//         data: progressData.map(entry => entry.accuracy),
+//         borderColor: 'green',
+//         fill: false,
+//       },
+//     ],
+//   };
+
+//   const options = {
+//     responsive: true,
+//     scales: {
+//       x: {
+//         type: 'time',
+//         time: {
+//           unit: 'day',
+//         },
+//       },
+//     },
+//   };
+
+//   return (
+//     <div>
+//       <h2>Progress</h2>
+//       <div style={{ position: 'relative', width: '100%', height: '400px' }}>
+//         <Line data={data} options={options} />
+//       </div>
+//     </div>
+//   );
+// }
+
+// export default Progress;
+
+
+// src/BarChart.js
 import React from 'react';
-import { Line } from 'react-chartjs-2';
-import { Chart, registerables } from 'chart.js';
-import 'chartjs-adapter-date-fns';
+import './BarChart.css'; // Import the CSS for styling
 
-// Register the necessary components for Chart.js
-Chart.register(...registerables);
-
-function Progress() {
-  // Placeholder data for now
+const BarChart = () => {
+  // Sample data
   const progressData = [
     { date: '2024-07-23', speed: 60, accuracy: 95 },
     { date: '2024-07-22', speed: 35, accuracy: 45 },
@@ -15,46 +75,26 @@ function Progress() {
     { date: '2024-07-20', speed: 45, accuracy: 75 },
     { date: '2024-07-19', speed: 50, accuracy: 85 },
     { date: '2024-07-18', speed: 55, accuracy: 96 },
-    
-    // Add more data
   ];
 
-  const data = {
-    labels: progressData.map(entry => entry.date),
-    datasets: [
-      {
-        label: 'Typing Speed (WPM)',
-        data: progressData.map(entry => entry.speed),
-        borderColor: 'blue',
-        fill: false,
-      },
-      {
-        label: 'Accuracy (%)',
-        data: progressData.map(entry => entry.accuracy),
-        borderColor: 'green',
-        fill: false,
-      },
-    ],
-  };
-
-  const options = {
-    responsive: true,
-    scales: {
-      x: {
-        type: 'time',
-        time: {
-          unit: 'day',
-        },
-      },
-    },
-  };
-
   return (
-    <div>
-      <h2>Progress</h2>
-      <Line data={data} options={options} />
+    <div className="chart-container">
+      <h2>Typing Progress Chart</h2>
+      <div className="chart">
+        {progressData.map((entry, index) => (
+          <div key={index} className="bar-container">
+            <div
+              className="bar speed-bar"
+              style={{ height: `${entry.speed * 3}px` }} // Scale for visibility
+              title={`Speed: ${entry.speed} WPM`}
+            />
+            <div className="bar accuracy-bar" style={{ height: `${entry.accuracy * 3}px` }} title={`Accuracy: ${entry.accuracy}%`} />
+            <div className="label">{entry.date}</div>
+          </div>
+        ))}
+      </div>
     </div>
   );
-}
+};
 
-export default Progress;
+export default BarChart;

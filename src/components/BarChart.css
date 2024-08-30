@@ -1,0 +1,49 @@
+/* src/BarChart.css */
+  .chart-container {
+    top: 50%;
+    max-width: 600px;
+    margin: auto;  
+    background-color: var(--header-bg);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .chart {
+    display: flex;
+    align-items: flex-end;
+    height: 300px;
+    margin-top: 20px;
+    border-left: 2px solid #333;
+    border-bottom: 2px solid #333;
+  }
+  
+  .bar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 0 5px;
+  }
+  
+  .bar {
+    width: 50px;
+    margin: 0 2px;
+    transition: background-color 0.3s;
+  }
+  
+  .speed-bar {
+    background-color: blue;
+  }
+  
+  .accuracy-bar {
+    background-color: green;
+  }
+  
+  .bar:hover {
+    opacity: 0.8;
+  }
+  
+  .label {
+    text-align: center;
+    margin-top: 5px;
+  }
