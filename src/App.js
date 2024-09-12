@@ -8,7 +8,6 @@ import Settings from './components/Settings';
 import AdminPanel from './components/AdminPanel';
 import Login from './components/Login';
 import Register from './components/Register';
-// import EditableParagraph from './components/EditableParagraph';
 import './styles.css';
 import { AuthProvider } from './contexts/AuthContext';
 
@@ -19,7 +18,6 @@ function App() {
     <Router>
       <Header />
       <Routes>
-        {/* <Route path="/" element={<EditableParagraph />} /> */}
         <Route path="/" element={<Home />} />
         <Route path="/test" element={<MemoizedTypingTest />} />
         <Route path="/progress" element={<Progress />} />
