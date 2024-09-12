@@ -2,9 +2,9 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import wordData from '../Vocab/EnglishMostFrequentWords.json';
 import sentencesData from '../Vocab/EnglishSentences.json';
 import { useNavigate } from 'react-router-dom';
+import './TypingTest.css';
 
 function TypingTest() {
-  const navigate = useNavigate();
   const [text, setText] = useState('');
   const [inputValue, setInputValue] = useState('');
   const [startTime, setStartTime] = useState(null);
@@ -22,9 +22,12 @@ function TypingTest() {
   const [netWordPerMinute, setnetWordPerMinute] = useState(0);
   const [totalKeyStroke, setTotalKeyStroke] = useState(0);
   const [kpm, setkpm] = useState(0);
+
   const timerRef = useRef(null);
   const wpmintervalRef = useRef(null);
-
+  const textAreaRef = useRef(null);
+  
+  const navigate = useNavigate();
 
   const resetTest = useCallback(() => {
     setText(getRandomWord(limit, type))
@@ -40,7 +43,108 @@ function TypingTest() {
     setkpm(0);
     clearInterval(timerRef.current);
     clearInterval(wpmintervalRef.current);
+
+    if (textAreaRef.current) {
+      textAreaRef.current.focus();
+    }
   }, [limit, type, timerDuration]);
+
+
+  const progress = useCallback(() => {
+    navigate('/Progress');
+  }, [navigate]);
+
+
+  const checkInput = useCallback((value) => {
+    let newCorrectCount = 0;
+    let newInCorrectCount = 0;
+    const newHighlightedText = text.split('').map((char, index) => {
+      if (index < value.length) {
+        const correct = value[index] === char;
+
+        if (correct) {
+          newCorrectCount++;
+          return <span style={{ color: 'green' }} key={index}>{char}</span>;
+        } else {
+          newInCorrectCount++;
+          return <span style={{ color: 'red' }} key={index}>{char}</span>;
+        }
+      } else {
+        return <span key={index}>{char}</span>; 
+      }
+    });
+
+    setHighlightedText(newHighlightedText);
+    setCorrectCount(newCorrectCount);
+    setInCorrectCount(newInCorrectCount);
+
+    if (value === text) {
+      alert(`Typing test completed in ${duration} seconds! You typed ${correctCount} characters correctly.`);
+      progress();
+      resetTest();
+    }
+
+  },[correctCount,progress,resetTest,duration,text]);
+
+
+  const checkwpm = useCallback((value) => {
+    let totalword;
+    if (value && value.length > 0) {
+      totalword = value.length / 5;
+    } else {
+      totalword = inputValue.length / 5;
+    }
+    let correctword = correctCount / 5;
+    let timeElapsed = Math.max(duration, 1) / 60.0;
+    let grosswpm = Math.round(totalword / timeElapsed);
+    let netwpm = Math.round(correctword / timeElapsed);
+    let totalkpm = Math.round(totalKeyStroke / timeElapsed);
+    setgrossWordPerMinute(grosswpm);
+    setnetWordPerMinute(netwpm);
+    setkpm(totalkpm);
+  }, [duration,inputValue, correctCount, totalKeyStroke]);
+
+
+  const startTimer = useCallback(() => {
+    clearInterval(timerRef.current);
+    timerRef.current = setInterval(() => {
+      setTimer((prevTimer) => {
+        if (prevTimer === 0) {
+          clearInterval(timerRef.current);
+          alert(`time up`);
+          navigate('/Progress');
+          resetTest();
+          return 0;
+        }
+        return prevTimer - 1;
+      });
+      setDuration((prevDuration) => prevDuration + 1);
+    }, 1000);
+    checkwpm();
+  },[checkwpm,navigate,resetTest]);
+
+  const startwpminterval = useCallback(() => {
+    clearInterval(wpmintervalRef.current);
+    wpmintervalRef.current = setInterval(() => { checkwpm(); }, 1000);
+  }, [checkwpm]);
+
+
+  const handleChange = useCallback((e) => {
+    const value = e.target.value;
+    setInputValue(value);
+    setTotalKeyStroke((prev) => (prev) + 1);
+    checkwpm(value);
+    if (mode !== 2) {
+
+      if (!startTime) {
+        setStartTime(Date.now());
+        startTimer();
+        startwpminterval();
+      }
+
+      checkInput(value);
+    }
+  },[checkInput,mode,startTime,startTimer,startwpminterval,checkwpm]);
 
 
   const setModeAndType = useCallback((newMode, newType, newLimit) => {
@@ -58,29 +162,36 @@ function TypingTest() {
   const freeMode = () => setModeAndType(2, '', 0);
 
 
-  useEffect(() => {
-    const typemode = localStorage.getItem('typingmode');
-    if (typemode !== null) {
-      const modevalue = parseInt(typemode, 10);
-      if (modevalue === 0) {
-        setModeAndType(0, wordData, 30);
-      } else if (modevalue === 1) {
-        setModeAndType(1, sentencesData, 1);
-      } else if (modevalue === 2) {
-        setModeAndType(2, '', 0);
-      }
-    } else {
-      setModeAndType(0, wordData, 30);
-    };
-  }, [setModeAndType]);
-
-
   const getRandomWord = (limit, type) => {
     const value = Object.values(type).map(item => item.val);
     const shuffeled = value.sort(() => 0.5 - Math.random());
     const result = shuffeled.slice(0, limit).join(' ');
     return result;
   }
+
+
+  useEffect(() => {
+    const typemode = localStorage.getItem('typingmode');
+    if (typemode !== null) {
+
+      const modevalue = parseInt(typemode, 10);
+
+      if (modevalue === 0) {
+        setModeAndType(0, wordData, 30);
+
+      } else if (modevalue === 1) {
+        setModeAndType(1, sentencesData, 1);
+
+      } else if (modevalue === 2) {
+        setModeAndType(2, '', 0);
+
+      }
+    } else {
+      setModeAndType(0, wordData, 30);
+
+    };
+    
+  }, [setModeAndType]);
 
 
   useEffect(() => {
@@ -96,92 +207,6 @@ function TypingTest() {
   }, [limit, type, mode, timerDuration]);
 
 
-  const handleChange = (e) => {
-    const value = e.target.value;
-    setInputValue(value);
-    setTotalKeyStroke(totalKeyStroke +1);
-    console.log(inputValue);
-    if (mode !== 2) {
-
-      if (!startTime) {
-        setStartTime(Date.now());
-        startTimer();
-        startwpminterval();
-      }
-
-      checkInput(value);
-    }
-  };
-
-
-  const startTimer = () => {
-    clearInterval(timerRef.current);
-    timerRef.current = setInterval(() => {
-      setTimer((prevTimer) => {
-        if (prevTimer === 0) {
-          clearInterval(timerRef.current);
-          alert(`time up`);
-          resetTest();
-          return 0;
-        }
-        return prevTimer - 1;
-      });
-      setDuration((prevDuration) => prevDuration + 1);
-    }, 1000);
-
-  };
-
-  const checkwpm = useCallback(() => {
-    let totalword = inputValue.length / 5;
-    let correctword = correctCount / 5;
-    console.log(inputValue);
-    let timeElapsed = Math.max(duration, 1) / 60.0;
-    let grosswpm = Math.round(totalword / timeElapsed);
-    let netwpm = Math.round(correctword / timeElapsed);
-    let totalkpm = Math.round(totalKeyStroke /timeElapsed);
-    setgrossWordPerMinute(grosswpm);
-    setnetWordPerMinute(netwpm);
-    setkpm(totalkpm);
-  }, [duration, inputValue, correctCount,totalKeyStroke]);
-
-
-  const startwpminterval = useCallback((value) => {
-    clearInterval(wpmintervalRef.current);
-    wpmintervalRef.current = setInterval(() => { checkwpm(); }, 1000);
-  }, [checkwpm]);
-
-  const checkInput = (value) => {
-    let newCorrectCount = 0;
-    let newInCorrectCount = 0;
-    const newHighlightedText = text.split('').map((char, index) => {
-      if (index < value.length) {
-        const correct = value[index] === char;
-
-        if (correct) {
-          newCorrectCount++;
-          return <span style={{ color: 'green' }} key={index}>{char}</span>;
-        } else {
-          newInCorrectCount++;
-          return <span style={{ color: 'red' }} key={index}>{char}</span>;
-        }
-      } else {
-        return <span key={index}>{char}</span>; // Return the character as is if not typed yet
-      }
-    });
-
-    setHighlightedText(newHighlightedText);
-    setCorrectCount(newCorrectCount);
-    setInCorrectCount(newInCorrectCount);
-
-    if (value === text) {
-      alert(`Typing test completed in ${duration} seconds! You typed ${correctCount} characters correctly.`);
-      progress();
-      resetTest();
-    }
-
-  };
-
-
   useEffect(() => {
     if (startTime) {
       startwpminterval();
@@ -191,19 +216,16 @@ function TypingTest() {
     };
   }, [startTime, inputValue, startwpminterval]);
 
-  const progress = () => {
-    navigate('/Progress');
-  };
-
-
+//  const output =  inputValue ? highlightedText : text;
   return (
-    <div>
-      <h2>Typing Test</h2>
-      <p>{inputValue ? highlightedText : text}</p> {/* Render the highlighted text */}
+    <div className="typing-test-container">
+      <p>{inputValue ? highlightedText : text}</p> 
       <textarea
-        value={inputValue}
+        ref={textAreaRef}
+        value={ inputValue }
         onChange={handleChange}
         placeholder="Start typing..."
+        aria-label="Typing input area"
       />
       {isVisible && (
         <>

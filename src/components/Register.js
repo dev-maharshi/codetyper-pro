@@ -2,31 +2,90 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import './Register.css';
 
-function Login() {
-  const [username, setUsername] = useState('admin');
-  const [password, setPassword] = useState('admin');
+const Register = () => {
   const navigate = useNavigate();
- 
-  const handleSubmit = (e) => {
+  const [formData, setFormData] = useState({
+    username: "",
+    password: "",
+    confirmPassword: "",
+  });
+  const [message, setMessage] = useState("");
+
+  const { username, password, confirmPassword } = formData;
+
+  const onChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const onSubmit = async (e) => {
     e.preventDefault();
-    if (username === 'admin' && password === 'admin') {
-      localStorage.setItem('isLoggedIn','true');
-      localStorage.setItem('isAdmin','true');
-      navigate('/admin-panel');
-      window.location.reload();
-    } else {
-      alert('Invalid credentials');
+
+  
+    if (password !== confirmPassword) {
+      setMessage("Passwords do not match");
+      return;
+    }
+
+    try {
+      const response = await fetch("http://localhost:5000/api/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setMessage("Registration successful");
+        navigate('/login');
+      } else {
+        setMessage(data.message);
+      }
+    } catch (error) {
+      setMessage("An error occurred during registration" + error);
     }
   };
 
   return (
-
     <div className="container">
     <h1>Register</h1>
-    <form action="#">
-        <input type="text" placeholder="Name" required />
-        <input type="email" placeholder="Email" required />
-        <input type="password" placeholder="Password" required />
+    <form className="form" onSubmit={onSubmit}>
+    {message && <p className="message">{message}</p>}
+        <div className="form-group">
+          <input
+            type="text"
+            id="username"
+            name="username"
+            placeholder="username"
+            value={username}
+            onChange={onChange}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <input
+            type="password"
+            id="password"
+            name="password"
+            placeholder="password"
+            value={password}
+            onChange={onChange}
+            required
+          />
+        </div>
+        <div className="form-group">
+          <input
+            type="password"
+            id="confirmPassword"
+            name="confirmPassword"
+            placeholder="confirm Password"
+            value={confirmPassword}
+            onChange={onChange}
+            required
+          />
+        </div>
         <button type="submit">Register</button>
     </form>
     <div className="social-login">
@@ -44,26 +103,11 @@ function Login() {
         </div>
     </div>
     <div className="login-option">
-        <p>Already have an account? <a href="/login">Login</a></p>
+        <p>Already have an account? <Link to="/login">Login</Link></p>
     </div>
 </div>
-    // <main className='register_container'>
-    //   <div className='background'>
-    //     <div>
-    //       <div id='rectangle1' />
-    //       <div id='rectangle2' />
-    //       <div id='laptopImg' />
-    //     </div>
-    //     <div className='Register'>
-    //       <h2>Welcome!</h2>
-    //       <button id="FBButton" onClick={handleSubmit} type='submit'>Sign Up with Facebook</button>
-    //       <button id="GButton" onClick={handleSubmit} type='submit'>Sign Up with Google</button>
-    //       <button id="GHButton" onClick={handleSubmit} type='submit'>Sign Up with GitHub</button>
-    //       <p>Yes i have an account? <strong> <Link to="/Login"> Login </Link></strong></p>
-    //     </div>
-    //   </div>
-    // </main>
+   
   );
 }
 
-export default Login;
+export default Register;

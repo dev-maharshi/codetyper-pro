@@ -189,7 +189,7 @@
     color: #21a1f1;
 }
 
-.container form {
+.container form , .form-group{
     display: flex;
     flex-direction: column;
 }
