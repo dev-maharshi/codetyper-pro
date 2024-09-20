@@ -29,6 +29,9 @@ function Header() {
         setIsAdmin(false);
         localStorage.removeItem('isLoggedIn');
         localStorage.removeItem('isAdmin');
+        localStorage.removeItem('user');
+        // localStorage.removeItem('stats');
+        localStorage.removeItem('typingmode');
         navigate('/');
     };
 

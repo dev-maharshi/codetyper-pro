@@ -17,14 +17,11 @@ const Login = () => {
         try {
             const user = await login(username, password);
             setUser(user);
-            setError('ok');
-            console.log('ok');
             navigate('/');
             localStorage.setItem('isLoggedIn', 'true');
-            //     localStorage.setItem('isAdmin', 'true');
             window.location.reload();
         } catch (err) {
-            setError('Invalid username or password'+ err);
+            setError('Invalid username or password');
         }
         // if (username === 'admin' && password === 'admin') {
         //     localStorage.setItem('isLoggedIn', 'true');

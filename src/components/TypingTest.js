@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import wordData from '../Vocab/EnglishMostFrequentWords.json';
 import sentencesData from '../Vocab/EnglishSentences.json';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import './TypingTest.css';
 
 function TypingTest() {
@@ -22,40 +23,97 @@ function TypingTest() {
   const [netWordPerMinute, setnetWordPerMinute] = useState(0);
   const [totalKeyStroke, setTotalKeyStroke] = useState(0);
   const [kpm, setkpm] = useState(0);
+  const [nextSentence, setNextSentences] = useState('');
+  const [stats, setStats] = useState([]);
+  const [userId, setUserId] = useState(null);
+
 
   const timerRef = useRef(null);
   const wpmintervalRef = useRef(null);
   const textAreaRef = useRef(null);
-  
+  const correctCountRef = useRef(correctCount);
+  const durationRef = useRef(duration);
+  const inCorrectCountRef = useRef(inCorrectCount);
+  const netWordPerMinuteRef = useRef(netWordPerMinute);
+  const grossWordPerMinuteRef = useRef(grossWordPerMinute);
+  const kpmRef = useRef(kpm);
+
+
   const navigate = useNavigate();
 
-  const resetTest = useCallback(() => {
-    setText(getRandomWord(limit, type))
-    setInputValue('');
-    setStartTime(null);
-    setDuration(0);
-    setTimer(timerDuration);
-    setCorrectCount(0);
-    setInCorrectCount(0);
-    setgrossWordPerMinute(0);
-    setHighlightedText([]);
-    setTotalKeyStroke(0);
-    setkpm(0);
-    clearInterval(timerRef.current);
-    clearInterval(wpmintervalRef.current);
+  useEffect(() => {
+    const userString = localStorage.getItem('user');
+    const user = JSON.parse(userString);
 
+    const userId = user.userId;
+    setUserId(userId);
+
+  }, []);
+
+
+  const resetTest = useCallback(() => {
+    if (type !== '') {
+      setText(getRandomTextData(limit, type));
+      setInputValue('');
+      setStartTime(null);
+      setDuration(0);
+      setTimer(timerDuration);
+      setCorrectCount(0);
+      setInCorrectCount(0);
+      setgrossWordPerMinute(0);
+      setHighlightedText([]);
+      setTotalKeyStroke(0);
+      setkpm(0);
+      clearInterval(timerRef.current);
+      clearInterval(wpmintervalRef.current);
+    } else {
+      setInputValue('');
+    }
     if (textAreaRef.current) {
       textAreaRef.current.focus();
     }
   }, [limit, type, timerDuration]);
 
 
+
+  const collectStats = useCallback(() => {
+    const stats = {
+      wpm: grossWordPerMinuteRef.current,
+      kpm: kpmRef.current,
+      accuracy: netWordPerMinuteRef.current,
+      time: durationRef.current,
+      correct: correctCountRef.current,
+      inCorrect: inCorrectCountRef.current
+    };
+    return stats;
+  }, []);
+
+  // const [userId, setUserId] = useState('66e43558e323ba20ba387a1d');
+  const saveStatsToServer = useCallback(async (stats) => {
+    try {
+      const response = await axios.post('http://localhost:5000/api/stats/update/', { userId, stats }, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      console.log('Stats saved successfully:', response.data);
+    } catch (error) {
+      console.error('Error saving stats:', error);
+    }
+  }, [userId]);
+
+
   const progress = useCallback(() => {
-    navigate('/Progress');
-  }, [navigate]);
+    const newStats = collectStats();
+    setStats(newStats);
+    saveStatsToServer(newStats);
+    console.log(newStats);
+    navigate('/Progress', { state: { newStats } });
+  }, [navigate, collectStats, saveStatsToServer]);
 
 
   const checkInput = useCallback((value) => {
+
     let newCorrectCount = 0;
     let newInCorrectCount = 0;
     const newHighlightedText = text.split('').map((char, index) => {
@@ -70,7 +128,7 @@ function TypingTest() {
           return <span style={{ color: 'red' }} key={index}>{char}</span>;
         }
       } else {
-        return <span key={index}>{char}</span>; 
+        return <span key={index}>{char}</span>;
       }
     });
 
@@ -79,12 +137,21 @@ function TypingTest() {
     setInCorrectCount(newInCorrectCount);
 
     if (value === text) {
-      alert(`Typing test completed in ${duration} seconds! You typed ${correctCount} characters correctly.`);
-      progress();
-      resetTest();
+
+      const newSentence = getRandomTextData(limit, type);
+
+      if (newSentence === text) {
+        const updatedSentence = getRandomTextData(limit, type);
+        setNextSentences(updatedSentence);
+        setText(updatedSentence);
+      } else {
+        setNextSentences(newSentence);
+        setText(newSentence);
+      }
+      setInputValue('');
     }
 
-  },[correctCount,progress,resetTest,duration,text]);
+  }, [limit, type, text]);
 
 
   const checkwpm = useCallback((value) => {
@@ -94,26 +161,29 @@ function TypingTest() {
     } else {
       totalword = inputValue.length / 5;
     }
-    let correctword = correctCount / 5;
     let timeElapsed = Math.max(duration, 1) / 60.0;
     let grosswpm = Math.round(totalword / timeElapsed);
-    let netwpm = Math.round(correctword / timeElapsed);
     let totalkpm = Math.round(totalKeyStroke / timeElapsed);
+    let netwpm = Math.round(correctCount / totalKeyStroke) * 100;
     setgrossWordPerMinute(grosswpm);
     setnetWordPerMinute(netwpm);
     setkpm(totalkpm);
-  }, [duration,inputValue, correctCount, totalKeyStroke]);
+  }, [duration, inputValue, correctCount, totalKeyStroke]);
+
+
+  const testComplete = useCallback(() => {
+    clearInterval(timerRef.current);
+    progress();
+    resetTest();
+  }, [progress, resetTest]);
 
 
   const startTimer = useCallback(() => {
     clearInterval(timerRef.current);
     timerRef.current = setInterval(() => {
       setTimer((prevTimer) => {
-        if (prevTimer === 0) {
-          clearInterval(timerRef.current);
-          alert(`time up`);
-          navigate('/Progress');
-          resetTest();
+        if (prevTimer <= 0) {
+          testComplete();
           return 0;
         }
         return prevTimer - 1;
@@ -121,7 +191,8 @@ function TypingTest() {
       setDuration((prevDuration) => prevDuration + 1);
     }, 1000);
     checkwpm();
-  },[checkwpm,navigate,resetTest]);
+  }, [checkwpm, testComplete]);
+
 
   const startwpminterval = useCallback(() => {
     clearInterval(wpmintervalRef.current);
@@ -144,7 +215,7 @@ function TypingTest() {
 
       checkInput(value);
     }
-  },[checkInput,mode,startTime,startTimer,startwpminterval,checkwpm]);
+  }, [checkInput, mode, startTime, startTimer, startwpminterval, checkwpm]);
 
 
   const setModeAndType = useCallback((newMode, newType, newLimit) => {
@@ -162,7 +233,7 @@ function TypingTest() {
   const freeMode = () => setModeAndType(2, '', 0);
 
 
-  const getRandomWord = (limit, type) => {
+  const getRandomTextData = (limit, type) => {
     const value = Object.values(type).map(item => item.val);
     const shuffeled = value.sort(() => 0.5 - Math.random());
     const result = shuffeled.slice(0, limit).join(' ');
@@ -182,6 +253,7 @@ function TypingTest() {
       } else if (modevalue === 1) {
         setModeAndType(1, sentencesData, 1);
 
+
       } else if (modevalue === 2) {
         setModeAndType(2, '', 0);
 
@@ -190,21 +262,36 @@ function TypingTest() {
       setModeAndType(0, wordData, 30);
 
     };
-    
-  }, [setModeAndType]);
 
+  }, [setModeAndType]);
 
   useEffect(() => {
     setIsVisible(mode !== 2);
-    const randomText = getRandomWord(limit, type);
+    const randomText = getRandomTextData(limit, type);
     setText(randomText);
+
+    const newSentence = getRandomTextData(limit, type);
+    setNextSentences(newSentence);
+
     setTimer(timerDuration);
 
     return () => {
       clearInterval(timerRef.current);
       clearInterval(wpmintervalRef.current);
     };
-  }, [limit, type, mode, timerDuration]);
+  }, [limit, type, setText, mode, timerDuration]);
+
+  useEffect(() => {
+    if (duration > 0 || timer === 0) {
+      const newStats = collectStats();
+
+      setStats((prevStats) => {
+        const updatedStats = [...prevStats, newStats];
+        localStorage.setItem('stats', JSON.stringify(updatedStats));
+        return updatedStats;
+      });
+    }
+  }, [duration, collectStats, timer]);
 
 
   useEffect(() => {
@@ -216,38 +303,61 @@ function TypingTest() {
     };
   }, [startTime, inputValue, startwpminterval]);
 
-//  const output =  inputValue ? highlightedText : text;
+
+  useEffect(() => {
+    grossWordPerMinuteRef.current = grossWordPerMinute;
+    kpmRef.current = kpm;
+    netWordPerMinuteRef.current = netWordPerMinute;
+    inCorrectCountRef.current = inCorrectCount;
+    correctCountRef.current = correctCount;
+    durationRef.current = duration;
+  }, [correctCount, duration, grossWordPerMinute, kpm, netWordPerMinute, inCorrectCount]);
+
+
   return (
     <div className="typing-test-container">
-      <p>{inputValue ? highlightedText : text}</p> 
+
+      <div className='randomText' >
+        <p>{inputValue ? highlightedText : text}</p>
+      </div>
+
+      {(type === sentencesData) && (
+        <p className="next-sentence" style={{ opacity: 0.5 }}>
+          {'=>' + nextSentence}
+        </p>
+      )
+      }
       <textarea
         ref={textAreaRef}
-        value={ inputValue }
+        value={inputValue}
         onChange={handleChange}
         placeholder="Start typing..."
         aria-label="Typing input area"
       />
-      {isVisible && (
-        <>
-          <p>Duration: {timer} seconds</p>
-          <p>WPM: {grossWordPerMinute}</p>
-          <p>Accuracy: {netWordPerMinute}</p>
-          <p>Correct Characters: {correctCount}</p>
-          <p>Incorrect Characters: {inCorrectCount}</p>
-          <p>kpm: {kpm}</p>
-        </>
-      )}
-      <div className='modebtn'>
-        <button id='resetbtn' onClick={resetTest} style={{ visibility: isVisible ? 'visible' : 'hidden' }}>Reset</button>
-        <button id='togglebtn' onClick={wordMode}>Word Mode</button>
-        <button id='togglebtn' onClick={sentencesMode}>Sentences Mode</button>
-        <button id='modebtn' onClick={freeMode}>Free Mode</button>
+      <div className='stats'>
+        {isVisible && (
+          <>
+            <p>Duration: {timer} seconds</p>
+            <p>WPM: {grossWordPerMinute}</p>
+          </>
+        )}
       </div>
-      <select style={{ visibility: isVisible ? 'visible' : 'hidden' }} onChange={(e) => setTimerDuration(Number(e.target.value))} value={timerDuration}>
-        <option value={30}>30 seconds</option>
-        <option value={60}>1 minute</option>
-        <option value={120}>2 minutes</option>
-      </select>
+
+      <div className='modebtn'>
+        <button id='resetbtn' onClick={resetTest}>Reset</button>
+        <button className={type === wordData ? 'active' : 'inactive'} onClick={wordMode}>Word Mode</button>
+        <button className={type === sentencesData ? 'active' : 'inactive'} onClick={sentencesMode}>Sentences Mode</button>
+        <button className={type === '' ? 'active' : 'inactive'} onClick={freeMode}>Free Mode</button>
+      </div>
+
+      <div className="timer-buttons" style={{ visibility: isVisible ? 'visible' : 'hidden' }}>
+        <button onClick={() => setTimerDuration(30)} className={timerDuration === 30 ? 'active' : ''}>30</button>
+        <button onClick={() => setTimerDuration(60)} className={timerDuration === 60 ? 'active' : ''}>60</button>
+        <button onClick={() => setTimerDuration(90)} className={timerDuration === 90 ? 'active' : ''}>90</button>
+        <button onClick={() => setTimerDuration(120)} className={timerDuration === 120 ? 'active' : ''}>120</button>
+      </div>
+
+
     </div>
   );
 }
