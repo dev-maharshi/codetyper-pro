@@ -1,195 +1,35 @@
-/* 
-.login_container .background {
-    width: 1280px;
-    height: 720px;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    background-color: #EBEFFF;
-    color: #1A1A1A;
-    border-radius: 30px;
-    position: absolute;
-    overflow: hidden;
-}
-
-.login_container #rectangle1 {
-    width: 438px;
-    height: 720px;
-    background: #AFB3FF;
-    position: absolute;
-    left: 842px;
-}
-
-.login_container #laptopImg {
-    width: 600px;
-    height: 590px;
-    position: absolute;
-    left: 565px;
-    top: 37px;
-    background-image: url('E:/coding/CodeTyper Pro/codetyper-pro/public/Other 03.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-}
-
-.login_container #rectangle2 {
-    width: 637px;
-    height: 141px;
-    top: 720px;
-    left: -287px;
-    background: #838CF1;
-    position: absolute;
-    transform: rotate(-41deg);
-    border-radius: 106px;
-}
-
-.login_container #rectangle3 {
-    width: 594px;
-    height: 131px;
-    top: 720px;
-    left: -254px;
-    background: #AFB3FF;
-    position: absolute;
-    transform: rotate(-41deg);
-    border-radius: 106px;
-}
-
-.login_container .Login {
-    position: absolute;
-    top: 177px;
-    left: 170px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
-.login_container h2 {
-    font-size: 16px;
-    font-style: bold;
-    margin-bottom: 30px;
-}
-
-.login_container .Login button {
-    width: 345px;
-    height: 54px;
-    padding: 15px;
-    margin: 11px;
-    display: flex;
-    gap: 15px;
-    align-items: center;
-    border: none;
-    box-shadow: #1A1A1A;
-    border-radius: 10px;
-    font-size: 20px;
-    font-weight: 400;
-    cursor: pointer;
-    transition-duration: 0.4s;
-}
-
-.login_container #FBButton {
-    background: #1877F2;
-    color: #FFF;
-}
-
-.login_container #FBButton:before {
-    content: url('E:/coding/CodeTyper Pro/codetyper-pro/public/FBLogo.svg');
-    width: 24px;
-    height: 24px;
-}
-.login_container #FBButton:hover{
-    background-color: #4099ff;
-}
-.login_container #GButton {
-    background: #FFF;
-    color: #000;
-}
-
-.login_container #GButton:before {
-    content: url('E:/coding/CodeTyper Pro/codetyper-pro/public/GLogo.svg');
-    width: 24px;
-    height: 24px;
-}
-.login_container #GButton:hover{
-
-    background-color: #ebebeb;
-}
-.login_container #GHButton {
-    background: #000;
-    color: #FFF;
-}
-
-.login_container #GHButton:before {
-    content: url('E:/coding/CodeTyper Pro/codetyper-pro/public/GHLogo.svg');
-    width: 24px;
-    height: 24px;
-}
-
-.login_container #GHButton:hover{
-
-    background-color: #1a1a1a;
-}
-
-.login_container p {
-    font-size: 16px;
-    margin-top: 30px;
-}
-
-.login_container strong a{
-    color: #000;
-    text-decoration: none;
-}
-
-.modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.5); 
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-  
-  .modal-content {
-    background: white;
-    padding: 20px;
-    border-radius: 4px;
-    width: 90%;
-    max-width: 500px;
-    position: relative;
-  }
-  
-  .modal-close-btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: red;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    cursor: pointer;
-  }
-   */
-
 .container {
     position: absolute;
     width: 300px;
     padding: 20px;
-    border: 1px solid #21a1f1;
+    border: 1px solid var(--button-bg);
     border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 5px 20px 12px rgb(0 0 0 / 40%);
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
 }
 
-.container h1 {
-    text-align: center;
-    color: #21a1f1;
+.container .exitBtn {
+    position: absolute;
+    background-color: transparent;
+    color: var(--text-color);
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
 }
 
-.container form , .form-group{
+.container .exitBtn:hover {
+    background-color: var(--button-bg);
+}
+
+.container h1 {
+    text-align: center;
+    color: var(--button-bg);
+}
+
+.container form,
+.form-group {
     display: flex;
     flex-direction: column;
 }
@@ -203,7 +43,7 @@
 
 .container button {
     padding: 10px;
-    background-color: #21a1f1;
+    background-color: var(--button-bg);
     color: white;
     border: none;
     border-radius: 4px;
@@ -214,7 +54,7 @@
     justify-content: center;
 }
 
-.container button:hover {
+.container .submitBtn:hover {
     background-color: #1a8dcf;
 }
 
@@ -228,8 +68,8 @@
 }
 
 .container .social-buttons {
-    display: flex; 
-    justify-content: space-between; 
+    display: flex;
+    justify-content: space-between;
 }
 
 .container .social-buttons button {
@@ -237,11 +77,11 @@
     color: #333;
     margin: 5px;
     border: 1px solid #ccc;
-    flex: 1; 
+    flex: 1;
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 40px; 
+    height: 40px;
 }
 
 .container .social-buttons .google {
@@ -257,8 +97,8 @@
 }
 
 .container .icon {
-    width: 20px; 
-    height: 20px; 
+    width: 20px;
+    height: 20px;
     background-size: contain;
     background-repeat: no-repeat;
     display: inline-block;
@@ -269,22 +109,23 @@
 }
 
 .container .github-icon {
-    background-image: url('E:/coding/CodeTyper Pro/codetyper-pro/public/GHLogo.svg'); 
+    background-image: url('E:/coding/CodeTyper Pro/codetyper-pro/public/GHLogo.svg');
 }
 
 .container .facebook-icon {
-    background-image: url('E:/coding/CodeTyper Pro/codetyper-pro/public/FBLogo.svg'); 
+    background-image: url('E:/coding/CodeTyper Pro/codetyper-pro/public/FBLogo.svg');
 }
+
 .container .register-option {
     text-align: center;
     margin-top: 20px;
 }
 
 .container .register-option a {
-    color: #21a1f1;
+    color: var(--button-bg);
     text-decoration: none;
 }
 
 .container .register-option a:hover {
-    text-decoration: underline;
+    text-decoration: none;
 }

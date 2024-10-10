@@ -23,21 +23,15 @@ const Login = () => {
         } catch (err) {
             setError('Invalid username or password');
         }
-        // if (username === 'admin' && password === 'admin') {
-        //     localStorage.setItem('isLoggedIn', 'true');
-        //     localStorage.setItem('isAdmin', 'true');
-        //     navigate('/admin-panel');
-        //     window.location.reload();
-        // } else {
-        //     alert('Invalid credentials');
-        // }
+    
     };
 
     return (
         <div className="container">
+            <button className='exitBtn' onClick={() => navigate('/')}>X</button>
             <form onSubmit={handleSubmit}>
                 <h1>Login</h1>
-                {error && <p className="error">{error}</p>}
+            {error && <p className="error">{error}</p>}
                 <div className='form-group'>
                     <input
                         type="text"
@@ -60,9 +54,9 @@ const Login = () => {
                         required
                     />
                 </div>
-                <button type="submit">Login</button>
+                <button type="submit" className='submitBtn'>Login</button>
             </form>
-            <div className="social-login">
+            {/* <div className="social-login">
                 <p>or sign in with</p>
                 <div className="social-buttons">
                     <button className="google">
@@ -75,7 +69,7 @@ const Login = () => {
                         <span className="icon facebook-icon"></span>
                     </button>
                 </div>
-            </div>
+            </div> */}
             <div className="register-option">
                 <p>Don't have an account? <Link to="/register">Register</Link></p>
             </div>

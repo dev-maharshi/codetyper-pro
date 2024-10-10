@@ -20,7 +20,7 @@ const Register = () => {
   const onSubmit = async (e) => {
     e.preventDefault();
 
-  
+
     if (password !== confirmPassword) {
       setMessage("Passwords do not match");
       return;
@@ -50,9 +50,10 @@ const Register = () => {
 
   return (
     <div className="container">
-    <h1>Register</h1>
-    <form className="form" onSubmit={onSubmit}>
-    {message && <p className="message">{message}</p>}
+      <button className='exitBtn' onClick={() => navigate('/')}>X</button>
+      <form className="form" onSubmit={onSubmit}>
+        <h1>Register</h1>
+        {message && <p className="message">{message}</p>}
         <div className="form-group">
           <input
             type="text"
@@ -86,9 +87,9 @@ const Register = () => {
             required
           />
         </div>
-        <button type="submit">Register</button>
-    </form>
-    <div className="social-login">
+        <button type="submit" className='submitBtn'>Register</button>
+      </form>
+      {/* <div className="social-login">
         <p>or sign up with</p>
         <div className="social-buttons">
             <button className="google">
@@ -101,12 +102,12 @@ const Register = () => {
                 <span className="icon facebook-icon"></span>
             </button>
         </div>
-    </div>
-    <div className="login-option">
+    </div> */}
+      <div className="login-option">
         <p>Already have an account? <Link to="/login">Login</Link></p>
+      </div>
     </div>
-</div>
-   
+
   );
 }
 

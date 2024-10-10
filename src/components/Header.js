@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import './Header.css';
 
 function Header() {
     const [theme, setTheme] = useState(localStorage.getItem('theme') || 'light');
     const [isLoggedIn, setIsLoggedIn] = useState(localStorage.getItem('isLoggedIn') === 'true');
-    const [isAdmin, setIsAdmin] = useState(localStorage.getItem('isAdmin') === 'true');
 
     const navigate = useNavigate();
 
@@ -26,9 +25,7 @@ function Header() {
 
     const handleLogout = () => {
         setIsLoggedIn(false);
-        setIsAdmin(false);
         localStorage.removeItem('isLoggedIn');
-        localStorage.removeItem('isAdmin');
         localStorage.removeItem('user');
         // localStorage.removeItem('stats');
         localStorage.removeItem('typingmode');
@@ -37,18 +34,6 @@ function Header() {
 
     return (
         <header>
-            <div className="logo">
-                <Link to="/">CodeTyper Pro</Link>
-            </div>
-            <nav>
-                <ul>
-                    <li><Link to="/">Home</Link></li>
-                    <li><Link to="/test">Typing Test</Link></li>
-                    <li><Link to="/progress">Progress</Link></li>
-                    <li><Link to="/settings">Settings</Link></li>
-                    {isLoggedIn && isAdmin && <li><Link to="/admin-panel">Admin Panel</Link></li>}
-                </ul>
-            </nav>
             <div className="theme-toggle" onClick={toggleTheme}>
                 {theme === 'light' ? '🌞' : '🌜'}
             </div>

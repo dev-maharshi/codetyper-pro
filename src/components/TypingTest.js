@@ -41,13 +41,18 @@ function TypingTest() {
 
   const navigate = useNavigate();
 
+
   useEffect(() => {
     const userString = localStorage.getItem('user');
-    const user = JSON.parse(userString);
 
-    const userId = user.userId;
-    setUserId(userId);
+    if (userString) {
 
+      const user = JSON.parse(userString);
+
+      const userId = user.userId;
+
+      setUserId(userId);
+    }
   }, []);
 
 
@@ -88,9 +93,15 @@ function TypingTest() {
     return stats;
   }, []);
 
-  // const [userId, setUserId] = useState('66e43558e323ba20ba387a1d');
   const saveStatsToServer = useCallback(async (stats) => {
+    if (!userId) {
+      console.error('userId is undefined');
+      return;
+    } 
+     
     try {
+      console.log('Sending stats:', stats, 'userId:', userId); 
+     
       const response = await axios.post('http://localhost:5000/api/stats/update/', { userId, stats }, {
         headers: {
           'Content-Type': 'application/json'
@@ -101,14 +112,27 @@ function TypingTest() {
       console.error('Error saving stats:', error);
     }
   }, [userId]);
+  
 
 
   const progress = useCallback(() => {
     const newStats = collectStats();
     setStats(newStats);
+
+    let statsArray = localStorage.getItem('stats');
+
+    if (statsArray) {
+      statsArray = JSON.parse(statsArray); 
+    } else {
+      statsArray = []; 
+    }
+
+    statsArray.push(newStats); 
+    localStorage.setItem('stats', JSON.stringify(statsArray));
+
     saveStatsToServer(newStats);
     console.log(newStats);
-    navigate('/Progress', { state: { newStats } });
+    navigate('/Progress');
   }, [navigate, collectStats, saveStatsToServer]);
 
 
@@ -182,7 +206,7 @@ function TypingTest() {
     clearInterval(timerRef.current);
     timerRef.current = setInterval(() => {
       setTimer((prevTimer) => {
-        if (prevTimer <= 0) {
+        if (prevTimer <= 1) {
           testComplete();
           return 0;
         }
@@ -356,7 +380,6 @@ function TypingTest() {
         <button onClick={() => setTimerDuration(90)} className={timerDuration === 90 ? 'active' : ''}>90</button>
         <button onClick={() => setTimerDuration(120)} className={timerDuration === 120 ? 'active' : ''}>120</button>
       </div>
-
 
     </div>
   );
