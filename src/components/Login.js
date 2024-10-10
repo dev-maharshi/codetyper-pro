@@ -23,7 +23,7 @@ const Login = () => {
         } catch (err) {
             setError('Invalid username or password');
         }
-    
+
     };
 
     return (
@@ -31,7 +31,7 @@ const Login = () => {
             <button className='exitBtn' onClick={() => navigate('/')}>X</button>
             <form onSubmit={handleSubmit}>
                 <h1>Login</h1>
-            {error && <p className="error">{error}</p>}
+                {error && <p className="error">{error}</p>}
                 <div className='form-group'>
                     <input
                         type="text"

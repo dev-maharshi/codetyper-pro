@@ -72,14 +72,14 @@ function Progress() {
 
           } else {
             console.warn('No data from server');
-            setData([]); 
+            setData([]);
           }
         } catch (error) {
           console.error('Error fetching stats from server:', error);
         }
       } else {
         console.warn("Login to save data to server");
-        
+
       }
     };
 

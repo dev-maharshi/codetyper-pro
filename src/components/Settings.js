@@ -9,7 +9,7 @@ function Settings() {
   const [playlistVideos, setPlaylistVideos] = useState([]);
   const playerRef = useRef(null);
 
-  // Extract playlist ID from URL
+
   const getPlaylistId = (url) => {
     const regex = /(?:list=)([^&]+)/;
     const match = url.match(regex);
@@ -29,8 +29,8 @@ function Settings() {
         key: '',
       },
     })
-    .then(response => setPlaylistVideos(response.data.items))
-    .catch(error => console.error(error));
+      .then(response => setPlaylistVideos(response.data.items))
+      .catch(error => console.error(error));
   };
 
   useEffect(() => {
@@ -65,11 +65,11 @@ function Settings() {
   };
 
   const previous = () => {
-    // Implement previous functionality
+
   };
 
   const next = () => {
-    // Implement next functionality
+
   };
 
   const opts = {

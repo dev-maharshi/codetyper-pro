@@ -1,57 +1,27 @@
 header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 10px;
-    background-color: transparent;
-    color: var(--header-text-color);
-  }
-  
-  .logo {
-    font-size: 1.5rem;
-  }
-  
-  .logo a {
-    color: var(--header-text-color);
-    text-decoration: none;
-  }
-  
-  nav ul {
-    list-style: none;
-    margin: 0px 0px 0px 200px;
-    padding: 0;
-    display: flex;
-  }
-  
-  nav ul li {
-    margin: 0 10px;
-  }
-  
-  nav ul li a {
-    color: var(--header-text-color);
-    text-decoration: none;
-  }
-  
-  nav ul li a:hover {
-    color: var(--text-hover);
-  }
-  
-  .theme-toggle {
-    cursor: pointer;
-    font-size: 1.5rem;
-  }
-  
-  .user-profile button {
-    margin-left: 10px;
-    padding: 5px 10px;
-    border: 0px;
-    border-radius: 10px;
-    background-color: var(--button-bg);
-    color: var(--button-text-color);
-    cursor: pointer;
-  }
-  
-  .user-profile button:hover {
-    background-color: #1a91da;
-  }
-  
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  background-color: transparent;
+  color: var(--header-text-color);
+}
+
+.theme-toggle {
+  cursor: pointer;
+  font-size: 1.5rem;
+}
+
+.user-profile button {
+  margin-left: 10px;
+  padding: 5px 10px;
+  border: 0px;
+  border-radius: 10px;
+  background-color: var(--button-bg);
+  color: var(--button-text-color);
+  cursor: pointer;
+}
+
+.user-profile button:hover {
+  background-color: #1a91da;
+}

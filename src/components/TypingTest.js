@@ -97,11 +97,11 @@ function TypingTest() {
     if (!userId) {
       console.error('userId is undefined');
       return;
-    } 
-     
+    }
+
     try {
-      console.log('Sending stats:', stats, 'userId:', userId); 
-     
+      console.log('Sending stats:', stats, 'userId:', userId);
+
       const response = await axios.post('http://localhost:5000/api/stats/update/', { userId, stats }, {
         headers: {
           'Content-Type': 'application/json'
@@ -112,7 +112,7 @@ function TypingTest() {
       console.error('Error saving stats:', error);
     }
   }, [userId]);
-  
+
 
 
   const progress = useCallback(() => {
@@ -122,12 +122,12 @@ function TypingTest() {
     let statsArray = localStorage.getItem('stats');
 
     if (statsArray) {
-      statsArray = JSON.parse(statsArray); 
+      statsArray = JSON.parse(statsArray);
     } else {
-      statsArray = []; 
+      statsArray = [];
     }
 
-    statsArray.push(newStats); 
+    statsArray.push(newStats);
     localStorage.setItem('stats', JSON.stringify(statsArray));
 
     saveStatsToServer(newStats);
@@ -351,6 +351,7 @@ function TypingTest() {
         </p>
       )
       }
+
       <textarea
         ref={textAreaRef}
         value={inputValue}
@@ -358,6 +359,7 @@ function TypingTest() {
         placeholder="Start typing..."
         aria-label="Typing input area"
       />
+
       <div className='stats'>
         {isVisible && (
           <>
