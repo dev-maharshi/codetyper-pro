@@ -58,7 +58,7 @@
     background-color: #1a8dcf;
 }
 
-.container .social-login {
+/* .container .social-login {
     text-align: center;
     margin-top: 20px;
 }
@@ -105,16 +105,16 @@
 }
 
 .container .google-icon {
-    background-image: url('E:/coding/CodeTyper Pro/codetyper-pro/public/GLogo.svg');
+    background-image: url('/codetyper-pro/public/GLogo.svg');
 }
 
 .container .github-icon {
-    background-image: url('E:/coding/CodeTyper Pro/codetyper-pro/public/GHLogo.svg');
+    background-image: url('/codetyper-pro/public/GHLogo.svg');
 }
 
 .container .facebook-icon {
-    background-image: url('E:/coding/CodeTyper Pro/codetyper-pro/public/FBLogo.svg');
-}
+    background-image: url('/codetyper-pro/public/FBLogo.svg');
+} */
 
 .container .register-option {
     text-align: center;

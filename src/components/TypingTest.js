@@ -71,6 +71,7 @@ function TypingTest() {
       setkpm(0);
       clearInterval(timerRef.current);
       clearInterval(wpmintervalRef.current);
+      localStorage.removeItem('stats')
     } else {
       setInputValue('');
     }
