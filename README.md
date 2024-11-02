@@ -1,70 +1,113 @@
-# Getting Started with Create React App
+# CodeTyper Pro
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+CodeTyper Pro is a web application designed to help users improve their typing speed and accuracy through various typing tests. The application tracks user progress, provides stats visualization, and includes user authentication. This project is built with React and Node.js, and stores data in MongoDB.
 
-## Available Scripts
+## Table of Contents
 
-In the project directory, you can run:
+- [Project Overview](#project-overview)
+- [Features](#features)
+- [Screenshots](#screenshots)
+- [Technologies and Libraries](#technologies-and-libraries)
+- [Setup and Installation](#setup-and-installation)
+- [Usage](#usage)
+- [Contributing](#contributing)
+- [License](#license)
 
-### `npm start`
+## Project Overview
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+CodeTyper Pro offers a platform for users to practice typing in multiple modes, view detailed statistics, and track their progress over time. The project includes the following main components:
+1. **Typing Test Module:** Users can choose from different typing modes (e.g., word mode, sentence mode).
+2. **Progress Tracking Module:** Stats, such as Words Per Minute (WPM) and Keystrokes Per Minute (KPM), are calculated and visualized on the progress page.
+3. **User Authentication:** Registration and login functionality ensures secure access to each user’s data.
+4. **Admin Panel:** Accessible only to authorized admin users, with options to manage users and data.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Features
 
-### `npm test`
+- User Registration and Login
+- Typing Test with Multiple Modes
+- Progress Visualization with Charts
+- Light and Dark Theme Toggle
+- Background Music Player for an engaging experience
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+## Screenshots
 
-### `npm run build`
+![Home Page](./screenshots/home_page.png)  
+*Home Page with Typing Test Options*
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+![Typing Test Page](./screenshots/typing_test_page.png)  
+*Typing Test Mode*
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+![Progress Page](./screenshots/progress_page.png)  
+*Progress Page with WPM and KPM Charts*
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+> Note: Add actual screenshots of your app to the `screenshots` folder in your project directory on GitHub, and use the appropriate file paths here.
 
-### `npm run eject`
+## Technologies and Libraries
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+- **Frontend:** React.js, TypeScript
+- **Backend:** Node.js, Express.js
+- **Database:** MongoDB
+- **Charting Library:** Chart.js (for visualizing stats)
+- **Authentication:** JSON Web Tokens (JWT)
+- **UI Libraries:** Material-UI, styled-components
+- **State Management:** Redux (if applicable)
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+## Setup and Installation
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+To get this project up and running locally, follow these steps:
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+1. **Clone the Repository**
+   ```bash
+   git clone https://github.com/yourusername/CodeTyperPro.git
+   cd CodeTyperPro
+2. **Install Dependencies**
+   
+    Navigate to the frontend and backend directories to install dependencies.
+      ```bash
+      # For frontend
+      cd client
+      npm install
+      
+      # For backend
+      cd ../server
+      npm install
+3. **Set Up Environment Variables**
+   
+    Create a .env file in the server directory with the following variables:
+     ```bash
+     MONGO_URI=your_mongodb_connection_string
+     JWT_SECRET=your_jwt_secret_key
+4. **Run the Application**
+   
+    Open two terminal windows and start both the frontend and backend servers:
+      ```bash
+      # Start the backend
+      cd backend
+      nodemon server.js
+      
+      # Start the frontend
+      cd codetyper-pro
+      npm start
+5. **Access the Application**
+   
+    Visit http://localhost:3000 in your browser to access the application.
+   
+## Usage
 
-## Learn More
+- **Login/Register:**  Create an account to save your progress or log in if you already have one.
+- **Typing Test:**  Choose your preferred typing mode and start typing.
+- **View Stats:**  Navigate to the Progress page to view your typing statistics, including WPM and KPM.
+- **Admin Access:**  Admin users can access the admin panel to manage users.  
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Contributing
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+We welcome contributions! Please follow these steps:
 
-### Code Splitting
+ 1. Fork the repository.
+ 2. Create a new branch with a descriptive name.
+ 3. Make your changes and commit them with clear messages.
+ 4. Push your changes to your fork and submit a pull request.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## License
 
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+This project is licensed under the MIT License.
