@@ -19,7 +19,6 @@ CodeTyper Pro offers a platform for users to practice typing in multiple modes, 
 1. **Typing Test Module:** Users can choose from different typing modes (e.g., word mode, sentence mode).
 2. **Progress Tracking Module:** Stats, such as Words Per Minute (WPM) and Keystrokes Per Minute (KPM), are calculated and visualized on the progress page.
 3. **User Authentication:** Registration and login functionality ensures secure access to each user’s data.
-4. **Admin Panel:** Accessible only to authorized admin users, with options to manage users and data.
 
 ## Features
 
