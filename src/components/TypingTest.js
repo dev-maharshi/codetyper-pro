@@ -81,7 +81,7 @@ function TypingTest() {
   }, [limit, type, timerDuration]);
 
 
-
+ 
   const collectStats = useCallback(() => {
     const stats = {
       wpm: grossWordPerMinuteRef.current,
