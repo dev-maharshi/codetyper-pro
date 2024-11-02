@@ -51,7 +51,6 @@ CodeTyper Pro offers a platform for users to practice typing in multiple modes, 
 - **Charting Library:** Chart.js (for visualizing stats)
 - **Authentication:** JSON Web Tokens (JWT)
 - **UI Libraries:** Material-UI, styled-components
-- **State Management:** Redux (if applicable)
 
 ## Setup and Installation
 
@@ -60,7 +59,7 @@ To get this project up and running locally, follow these steps:
 1. **Clone the Repository**
    ```bash
    git clone https://github.com/dev-maharshi/codetyper-pro.git
-   cd CodeTyperPro
+   cd codetyper-pro
 
 2. **Install Dependencies**
    
@@ -103,7 +102,6 @@ To get this project up and running locally, follow these steps:
 - **Login/Register:**  Create an account to save your progress or log in if you already have one.
 - **Typing Test:**  Choose your preferred typing mode and start typing.
 - **View Stats:**  Navigate to the Progress page to view your typing statistics, including WPM and KPM.
-- **Admin Access:**  Admin users can access the admin panel to manage users.  
 
 ## Contributing
 
